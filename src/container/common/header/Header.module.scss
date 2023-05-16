@@ -1,0 +1,111 @@
+@use "../../../style/common" as c;
+
+.header {
+   display: flex;
+   flex-direction: row;
+   justify-content: space-between;
+   align-items: center;
+   padding: 0;
+   font-size: 15px;
+   gap: 11px;
+   position: relative;
+   width: 95%;
+   height: c.$h-header;
+   box-shadow: 5px 7px 25px 0px #200726eb;
+   background: linear-gradient(90.19deg, rgba(39, 39, 39, 0.32) 2.81%, rgba(44, 27, 16, 0.64) 98.21%);
+   mix-blend-mode: normal;
+   box-shadow: 5px 7px 25px rgba(32, 7, 38, 0.92);
+   backdrop-filter: blur(12.5px);
+   border: 1px solid rgba(255, 248, 200, 0.8);
+   border-radius: 99px;
+   margin: 10px auto;
+   position: fixed;
+   left: 50%;
+   transform: translateX(-50%);
+   z-index: 1000;
+   .logo {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 0px;
+      width: c.$h-header;
+      height: c.$h-header;
+      /* Inside auto layout */
+      flex: none;
+      order: 0;
+      flex-grow: 0;
+      border-radius: 100%;
+      overflow: hidden;
+      img {
+         width: 132px;
+         height: 128px;
+      }
+   }
+
+   .navContainer {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      padding: 10px 49px 10px 3rem;
+
+      height: 91px;
+   }
+
+   .userInfo {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0px 0px 0px 38px;
+      gap: 10px;
+      height: calc(c.$h-header - 2px);
+      /* Accent/5 */
+      border: 1px solid #200726;
+      border-radius: 100px;
+      /* Inside auto layout */
+      flex: none;
+      order: 2;
+      flex-grow: 0;
+      margin: 2px;
+
+      .iconDown {
+         font-size: 61px;
+         color: c.$Complementary1;
+      }
+      .userName {
+         font-size: 4rem;
+         font-weight: 400;
+         font-family: c.$Font1;
+         color: c.$Complementary2;
+      }
+      .userAvatar {
+         height: c.$h-header;
+         border-radius: 100%;
+         overflow: hidden;
+         img {
+            width: 100%;
+            height: c.$h-header;
+         }
+      }
+   }
+   .rightNav {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      padding: 24px 0px;
+      gap: 10px;
+
+      width: 513px;
+      height: 119px;
+
+      border-radius: 90px;
+   }
+
+ 
+}
+.iconButtonLogin {
+   width: 1000px;
+}

@@ -1,0 +1,58 @@
+@use '../../../style/common' as c;
+
+.buttonContainer {
+   box-sizing: border-box;
+
+   /* Auto layout */
+
+   display: flex;
+   flex-direction: row;
+   justify-content: center;
+   align-items: center;
+   padding: 10px 20px;
+   gap: 10px;
+
+   width: fit-content;
+   height: 81px;
+
+   /* Dominant/5 */
+
+   border: 1px solid c.$Accent1;
+   border-radius: 37px;
+
+   /* Inside auto layout */
+
+   flex: none;
+   order: 5;
+   flex-grow: 0;
+   span {
+      font-weight: 100;
+      font-family: "Comic Sans MS";
+      font-style: normal;
+      font-size: 3.2rem;
+      line-height: 45px;
+      /* identical to box height */
+
+      display: flex;
+      align-items: center;
+      text-align: center;
+      color: c.$Complementary1;
+   }
+   img {
+      height: 80%;
+   }
+  
+}
+.ripple {
+   background-position: center;
+   transition: background 0.8s;
+ }
+ .ripple:hover {
+   background: #0080605a radial-gradient(circle, transparent 1%, #0080605a 1%) center/15000%;
+   cursor: pointer;
+ }
+ .ripple:active:hover {
+   background-color:  #0080605a;
+   background-size: 100%;
+   transition: background 0s;
+}

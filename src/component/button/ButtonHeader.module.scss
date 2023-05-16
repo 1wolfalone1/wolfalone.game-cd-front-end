@@ -1,0 +1,89 @@
+@use "../../style/common" as c;
+
+.HeaderLink {
+   display: flex;
+   flex-direction: row;
+   justify-content: center;
+   align-items: center;
+   padding: 0px;
+
+   width: 191px;
+   height: 71px;
+
+   /* Inside auto layout */
+
+   flex: none;
+   order: 0;
+   flex-grow: 0;
+   span {
+      font-family: "Comic Sans MS";
+      font-style: normal;
+      font-weight: 400;
+      font-size: 3rem;
+      line-height: 56px;
+      /* identical to box height */
+      color: c.$Accent1;
+      display: flex;
+      align-items: center;
+      text-align: center;
+   }
+}
+
+.active {
+   border-bottom: 2px solid c.$Complementary1;
+}
+
+.headerButton {
+   display: flex;
+   flex-direction: row;
+   justify-content: center;
+   align-items: center;
+   padding: 1rem 3rem;
+   gap: 1rem;
+   width: fit-content;
+   height: 7rem;
+
+   /* Accent/5 */
+
+   /* Complementary/3 */
+
+   border: 1px solid #8fb3a0;
+   box-shadow: 3px 4px 8px rgba(98, 39, 115, 0.64);
+   border-radius: 100px;
+
+   span {
+      font-family: c.$Font2;
+      font-style: normal;
+      font-weight: 400;
+      font-size: 3.2rem;
+      line-height: 53px;
+      display: flex;
+      align-items: center;
+      text-align: center;
+
+      /* Complementary/2 */
+
+      color: c.$Complementary2;
+   }
+   .icon {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    
+   }
+}
+.ripple {
+   background-position: center;
+   transition: background 0.8s;
+}
+.ripple:hover {
+   background: #0080605a radial-gradient(circle, transparent 1%, #0080605a 1%) center/15000%;
+   cursor: pointer;
+}
+.ripple:active:hover {
+   background-color: #0080605a;
+   background-size: 100%;
+   transition: background 0s;
+}
+
+

@@ -1,0 +1,81 @@
+.container {
+   z-index: 90;
+
+   .leftMessage {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 28px 0px;
+      position: absolute;
+      width: 714px;
+      height: fit-content;
+      left: 14px;
+      top: 195px;
+
+      background-color: #233939a5;
+      /* Accent/5 */
+
+      border: 1px solid #200726;
+      box-shadow: 4px 4px 20px rgba(55, 0, 0, 0.672);
+      backdrop-filter: blur(20px);
+      border-radius: 30px;
+
+      /* Note: backdrop-filter has minimal browser support */
+      .title {
+         font-family: "Comic Sans MS";
+         font-style: normal;
+         font-weight: 700;
+         font-size: 48px;
+         line-height: 67px;
+         /* identical to box height */
+
+         display: flex;
+         align-items: center;
+
+         /* Complementary/1 */
+
+         color: #fff8c8;
+      }
+      p {
+         padding: 0 20px 20px 20px;
+         font-family: "Segoe UI";
+         font-style: normal;
+         font-weight: 400;
+         font-size: 3.2rem;
+         line-height: 53px;
+         display: flex;
+         align-items: center;
+         /* Accent/1 */
+         color: #c6cfff;
+      }
+   }
+
+   .rightMessage {
+      position: absolute;
+      width: 408px;
+      height: 354px;
+      left: 1359px;
+      top: 195px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      p {
+         width: 408px;
+         height: 211px;
+
+         font-family: "Comic Sans MS";
+         font-style: normal;
+         font-weight: 400;
+         font-size: 40px;
+         line-height: 56px;
+         display: flex;
+         align-items: center;
+         text-align: center;
+
+         /* Complementary/1 */
+
+         color: #fff8c8;
+      }
+   }
+}
