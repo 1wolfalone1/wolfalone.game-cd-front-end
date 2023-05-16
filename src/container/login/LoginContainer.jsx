@@ -10,23 +10,24 @@ import ButtonGoogle from "../../component/button/buttonGoogle/ButtonGoogle";
 import { Link } from "react-router-dom";
 import { getData, getLogin } from "../../api/authenticationApi";
 import { GoogleLogin, googleLogout, useGoogleLogin } from "@react-oauth/google";
-
-
+import { useCookies } from "react-cookie";
+import api from "../../api/authenticationApi";
 export default function LoginContainer() {
+   const [cookies, setCookie, removeCookie] = useCookies();
+   console.log(cookies);
    const login = useGoogleLogin({
       onSuccess: (response) => {
-         console.log(response)
-         handleGoogle(response)
+         console.log(response);
+         handleGoogle(response);
       },
       onError: (error) => {
          console.log(error, "error message");
-         
       },
    });
    const logOut = () => {
       googleLogout();
    };
- 
+
    const dispatch = useDispatch();
    const animation = {
       initial: {
@@ -39,35 +40,43 @@ export default function LoginContainer() {
          },
       },
    };
-   useEffect(() => {
-      const fetchGet = async () => {
-         try {
-            const response = await getData();
-            console.log(response.data, 'dataaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa');
-         } catch (error) {
-            console.log(error, 'dataaaaaa');
 
-         }
-      };
-      fetchGet();
-   }, []);
    useLayoutEffect(() => {
       dispatch(layoutSlice.actions.updateLayout("loginLayout"));
-
+      setCookie("asas", "sadfaf");
+   
       return () => {
          dispatch(layoutSlice.actions.updateLayout(""));
       };
    }, []);
    const handleGoogle = async (data) => {
       try {
+         const response = await api.post("/oauth2/google", data)
+         setCookie("authentication", response.data);
 
-         const response = await getLogin(data);
-         console.log(response.data, "dataaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+         console.log(
+            response,
+            "11111111111111111111111222222222222222222222222211111111111111"
+         );
+
       } catch (error) {
          console.error(error, "dataaaaaa");
       }
    };
-
+   const handleTest = async (cook) => {
+      try {
+         const tmp = cook.authentication;
+         console.log(cook)
+         const response = await api.get("/send",  {
+            headers: {
+               Authorization: `Bearer ${tmp}`,
+            },
+         });
+         console.log(response);
+      } catch (error) {
+         console.error(error, "dataaaaaa");
+      }
+   };
    return (
       <motion.div
          variants={animation}
@@ -141,6 +150,9 @@ export default function LoginContainer() {
                   },
                   fontSize: "3rem",
                }}
+               onClick={() => {
+                  handleTest(cookies)
+               }}
             >
                Login
                {/* <GoogleLogin
@@ -153,10 +165,7 @@ export default function LoginContainer() {
             Or
          </div>
          <div>
-            <ButtonGoogle
-               content={"Sign in with Google"}
-               onClick={login}
-            />
+            <ButtonGoogle content={"Sign in with Google"} onClick={login} />
          </div>
          <div className={clsx(s.isSignUP)}>
             <span>

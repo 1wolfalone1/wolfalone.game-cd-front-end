@@ -7,6 +7,7 @@ import { ThemeProvider, createTheme } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import RegistrationContainer from "./container/register/RegistrationContainer";
 import HomeContainer from "./container/home/HomeContainer";
+import { useCookies } from "react-cookie";
 
 const darkTheme = createTheme({
    palette: {
@@ -14,6 +15,10 @@ const darkTheme = createTheme({
    },
 });
 function App() {
+   const [cookies, setCookie, removeCookie] = useCookies();
+
+
+   
    return (
       <ThemeProvider theme={darkTheme}>
          <CssBaseline />

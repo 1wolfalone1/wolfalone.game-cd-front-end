@@ -43,7 +43,7 @@ export default function HomeContainer() {
                   color: '#f7ffe1ff',
                   fontSize: "4rem",
                   backgroundColor: "#191818b4",
-                  padding: "4rem 6rem",
+                  padding: "2rem 4rem",
                   textTransform: "none",
                   border: "1px solid #f7ffe1ff",
                   boxShadow: "4px 4px 20px rgba(55, 0, 0, 0.672)",

@@ -1,5 +1,6 @@
 import { Start } from "@mui/icons-material";
 import axios from "axios";
+
 const api = axios.create({
    baseURL: "http://localhost:3005/api/v1/authentication",
    headers: {
@@ -9,11 +10,17 @@ const api = axios.create({
 export default api;
 
 export const getData = () => {
-   return api.get("/api/v1/authentication/send");
+   return api.get("/send", {
+      headers: {
+         Authorization: window.localStorage.getItem("authentication"),
+      },
+   });
 };
 
 export const getLogin = (payload) => {
-   return api.post(
-      "/oauth2/google", payload
-   );
+   return api.post("/oauth2/google", payload, {
+      headers: {
+         Authorization: `Bearer ${window.localStorage.getItem("authentication")}`,
+      },
+   });
 };

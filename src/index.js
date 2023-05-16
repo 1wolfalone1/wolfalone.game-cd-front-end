@@ -8,6 +8,7 @@ import store from "./redux/store";
 import { Provider } from "react-redux";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import { CLIENT_ID } from "./config/authentication";
+import { CookiesProvider } from 'react-cookie';
 const root = ReactDOM.createRoot(document.getElementById("root"));
 // function createRipple(event) {
 //    const button = event.currentTarget;
@@ -37,6 +38,9 @@ const root = ReactDOM.createRoot(document.getElementById("root"));
 //  }
 root.render(
    <React.StrictMode>
+      <CookiesProvider>
+
+      </CookiesProvider>
       <GoogleOAuthProvider clientId={CLIENT_ID}>
          <BrowserRouter>
             <Provider store={store}>
