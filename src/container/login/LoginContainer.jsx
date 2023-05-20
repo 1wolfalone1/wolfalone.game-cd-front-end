@@ -1,5 +1,5 @@
 import s from "./LoginContainer.module.scss";
-import React, { useEffect, useLayoutEffect } from "react";
+import React, { useEffect, useLayoutEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import layoutSlice from "../common/layout/layoutSlice";
 import { motion } from "framer-motion";
@@ -7,28 +7,32 @@ import clsx from "clsx";
 import { Button, FormHelperText, TextField } from "@mui/material";
 import { style } from "../../style/custom/custom";
 import ButtonGoogle from "../../component/button/buttonGoogle/ButtonGoogle";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { getData, getLogin } from "../../api/authenticationApi";
 import { GoogleLogin, googleLogout, useGoogleLogin } from "@react-oauth/google";
 import { useCookies } from "react-cookie";
 import api from "../../api/authenticationApi";
+import userInfoSlice from "../../redux/global/userInfoSlice";
+import { red } from "@mui/material/colors";
+
 export default function LoginContainer() {
    const [cookies, setCookie, removeCookie] = useCookies();
+   const dispatch = useDispatch();
+   const [loginStatus, setLoginStatus] = useState("");
+   const [loginGoogleStatus, setLoginGoogleStatus] = useState(true);
    console.log(cookies);
+   const [username, setUserName] = useState("");
+   const [password, setPassword] = useState("");
+   const navigate = useNavigate();
    const login = useGoogleLogin({
       onSuccess: (response) => {
-         console.log(response);
          handleGoogle(response);
       },
       onError: (error) => {
          console.log(error, "error message");
+         setLoginGoogleStatus(false);
       },
    });
-   const logOut = () => {
-      googleLogout();
-   };
-
-   const dispatch = useDispatch();
    const animation = {
       initial: {
          opacity: 0,
@@ -40,43 +44,60 @@ export default function LoginContainer() {
          },
       },
    };
+   const handle200 = (response) => {
+      dispatch(
+         userInfoSlice.actions.changeAuthentication({
+            status: "user",
+            info: {
+               ...response.data,
+            },
+         })
+      );
+      localStorage.setItem("user", JSON.stringify(response.data));
+      navigate("/");
+   };
 
    useLayoutEffect(() => {
       dispatch(layoutSlice.actions.updateLayout("loginLayout"));
-      setCookie("asas", "sadfaf");
-   
+
       return () => {
          dispatch(layoutSlice.actions.updateLayout(""));
       };
    }, []);
    const handleGoogle = async (data) => {
       try {
-         const response = await api.post("/oauth2/google", data)
-         setCookie("authentication", response.data);
-
-         console.log(
-            response,
-            "11111111111111111111111222222222222222222222222211111111111111"
-         );
-
-      } catch (error) {
-         console.error(error, "dataaaaaa");
-      }
-   };
-   const handleTest = async (cook) => {
-      try {
-         const tmp = cook.authentication;
-         console.log(cook)
-         const response = await api.get("/send",  {
-            headers: {
-               Authorization: `Bearer ${tmp}`,
-            },
-         });
+         const response = await api.post("/oauth2/google", data);
          console.log(response);
+         if (response.status === 200) {
+            handle200(response)
+         }
       } catch (error) {
          console.error(error, "dataaaaaa");
+         setLoginGoogleStatus(false);
       }
    };
+   const handleLoginUsername = async () => {
+      try {
+         const response = await api.post("/auth/login", {
+            email: username,
+            token: password,
+         });
+         console.log(response, '111111111');
+         if (response.status === 200) {
+            handle200(response)
+         } 
+      } catch (error) {
+         const response = error.response;
+         if(response.status ===406){
+            setLoginStatus("Invalid username or password!!! Try again.")
+         } else {
+            setLoginStatus("Something wrong!!! Try again.")
+         }
+         
+      }
+   };
+
+   
    return (
       <motion.div
          variants={animation}
@@ -92,6 +113,11 @@ export default function LoginContainer() {
                id="filled-basic"
                label="Email"
                variant="filled"
+               onChange={(e) => {
+                  setUserName(e.target.value);
+               }}
+               onFocus={() => setLoginStatus('')}
+               value={username}
                sx={{
                   width: "80%",
                   color: "warning",
@@ -112,6 +138,22 @@ export default function LoginContainer() {
                label="Password"
                variant="filled"
                size="small"
+               type="password"
+               onChange={(e) => {
+                  setPassword(e.target.value);
+               }}
+               onFocus={() => setLoginStatus('')}
+               value={password}
+               helperText={loginStatus}
+               FormHelperTextProps={
+                  {
+                     style:{
+                        fontSize: "1.6rem",
+                        color: "#ffac5f", 
+                        marginLeft: '0px'
+                     }
+                  }
+               }
                sx={{
                   width: "80%",
                   color: "warning",
@@ -151,7 +193,7 @@ export default function LoginContainer() {
                   fontSize: "3rem",
                }}
                onClick={() => {
-                  handleTest(cookies)
+                  handleLoginUsername();
                }}
             >
                Login
@@ -166,6 +208,13 @@ export default function LoginContainer() {
          </div>
          <div>
             <ButtonGoogle content={"Sign in with Google"} onClick={login} />
+            <div className={clsx(s.helpGooleText)}>
+               {loginGoogleStatus ? (
+                  ""
+               ) : (
+                  <span>Sign in by Google failed! Try again</span>
+               )}
+            </div>
          </div>
          <div className={clsx(s.isSignUP)}>
             <span>

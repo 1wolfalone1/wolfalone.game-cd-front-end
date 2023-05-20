@@ -22,7 +22,7 @@
    position: fixed;
    left: 50%;
    transform: translateX(-50%);
-   z-index: 1000;
+   z-index: 100;
    .logo {
       display: flex;
       flex-direction: column;
@@ -52,13 +52,15 @@
 
       height: 91px;
    }
-
+   .userInfoContainer {
+      position: relative;
+   }
    .userInfo {
       display: flex;
       flex-direction: row;
       justify-content: space-between;
       align-items: center;
-      padding: 0px 0px 0px 38px;
+      padding: 0px 0px 0px 0;
       gap: 10px;
       height: calc(c.$h-header - 2px);
       /* Accent/5 */
@@ -69,13 +71,16 @@
       order: 2;
       flex-grow: 0;
       margin: 2px;
-
+      position: relative;
+      &:hover {
+         cursor: pointer;
+      }
       .iconDown {
-         font-size: 61px;
+         font-size: 3.2rem;
          color: c.$Complementary1;
       }
       .userName {
-         font-size: 4rem;
+         font-size: 3.2rem;
          font-weight: 400;
          font-family: c.$Font1;
          color: c.$Complementary2;
@@ -84,6 +89,7 @@
          height: c.$h-header;
          border-radius: 100%;
          overflow: hidden;
+         width: c.$h-header;
          img {
             width: 100%;
             height: c.$h-header;

@@ -11,7 +11,7 @@ import { motion } from "framer-motion";
 const Layout = ({ children }) => {
    const animation = {
       initial: {
-         opacity: 0,
+         opacity: 0.5,
       },
       animate: {
          opacity: 1,
@@ -24,21 +24,18 @@ const Layout = ({ children }) => {
    useLayoutEffect(() => {}, []);
    return (
       <>
-         <header>
-            <Header />
-         </header>
-         <motion.div
-            variants={animation}
-            initial="initial"
-            animate="animate"
-            className={clsx("content", layoutState)}
-         >
-            <div className="content-space"></div>
-            <Outlet layoutState={layoutState}/>
+         <motion.div variants={animation} initial="initial" animate="animate">
+            <header>
+               <Header />
+            </header>
+            <div className={clsx("content", layoutState)}>
+               <div className="content-space"></div>
+               <Outlet layoutState={layoutState} />
+            </div>
+            <footer>
+               <Footer />
+            </footer>
          </motion.div>
-         <footer>
-            <Footer />
-         </footer>
       </>
    );
 };

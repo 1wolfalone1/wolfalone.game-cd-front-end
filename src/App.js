@@ -8,6 +8,9 @@ import CssBaseline from "@mui/material/CssBaseline";
 import RegistrationContainer from "./container/register/RegistrationContainer";
 import HomeContainer from "./container/home/HomeContainer";
 import { useCookies } from "react-cookie";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import userInfoSlice from "./redux/global/userInfoSlice";
 
 const darkTheme = createTheme({
    palette: {
@@ -15,16 +18,26 @@ const darkTheme = createTheme({
    },
 });
 function App() {
-   const [cookies, setCookie, removeCookie] = useCookies();
+   const dispatch = useDispatch();
+   useEffect(() => {
+      const user = localStorage.getItem("user");
+      if (user) {
+         console.log(user)
+         dispatch(
+            userInfoSlice.actions.changeAuthentication({
+               status: "user",
+               info: JSON.parse(user),
+            })
+         );
+      }
+   }, []);
 
-
-   
    return (
       <ThemeProvider theme={darkTheme}>
          <CssBaseline />
          <Routes>
             <Route element={<Layout />}>
-               <Route index element={<HomeContainer/>} />
+               <Route index element={<HomeContainer />} />
                <Route path="/login" element={<LoginContainer />} />
                <Route path="/signup" element={<RegistrationContainer />} />
             </Route>

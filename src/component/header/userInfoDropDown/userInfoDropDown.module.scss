@@ -1,0 +1,38 @@
+@use "../../../style/common" as c;
+
+.container {
+   position: absolute;
+   left: 0;
+   right: 0;
+   top: 0;
+   z-index: 1;
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   border-radius: c.$h-header;
+   .space {
+      height: c.$h-header;
+   }
+   .content {
+      /* From https://css.glass */
+      background: rgba(34, 34, 34, 0.821);
+      border-radius: 16px;
+      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+      backdrop-filter: blur(9px);
+      -webkit-backdrop-filter: blur(100px);
+      border: 1px solid rgba(34, 34, 34, 0.55);
+      border-radius: 2rem;
+      width: 80%;
+      .item {
+         display: flex;
+         justify-content: space-between;
+         padding: 10px 20px;
+         font-size: 2rem;
+         color: c.$Complementary1;
+         cursor: pointer;
+         .icon {
+
+         }
+      }
+   }
+}
