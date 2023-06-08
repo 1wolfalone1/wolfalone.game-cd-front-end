@@ -1,0 +1,28 @@
+
+.containerSlider {
+   display: flex;
+   justify-content: center;
+   align-items: end;
+   margin-bottom: 1rem;
+
+   .MuiTablePagination-input {
+      font-size: 100px !important;
+   }
+   .MuiPaginationItem-sizeLarge {
+      font-size: 100px !important;
+   }
+   :global(.MuiPaginationItem-ellipsis) {
+      font-size: 3rem;
+   }
+   :global(.MuiPaginationItem-root ) {
+      font-size: 3rem;
+   }
+   :global(.MuiPaginationItem-icon) {
+      font-size: 3rem;
+   }
+   :global(.MuiButtonBase-root) {
+      color: rgb(82, 200, 55);
+      width: 5rem;
+      height: 5rem;
+   }
+}

@@ -11,6 +11,7 @@ import { useCookies } from "react-cookie";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import userInfoSlice from "./redux/global/userInfoSlice";
+import GamesPageContainer from "./container/games-page/GamesPageContainer";
 
 const darkTheme = createTheme({
    palette: {
@@ -27,7 +28,7 @@ function App() {
             userInfoSlice.actions.changeAuthentication({
                status: "user",
                info: JSON.parse(user),
-            })
+         })
          );
       }
    }, []);
@@ -40,6 +41,7 @@ function App() {
                <Route index element={<HomeContainer />} />
                <Route path="/login" element={<LoginContainer />} />
                <Route path="/signup" element={<RegistrationContainer />} />
+               <Route path="/games" element={<GamesPageContainer />} />
             </Route>
          </Routes>
       </ThemeProvider>

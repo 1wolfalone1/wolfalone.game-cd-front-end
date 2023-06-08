@@ -7,6 +7,8 @@ import { useSelector } from "react-redux";
 import { statusLayoutSelector } from "./layoutSlice";
 import { useEffect, useLayoutEffect } from "react";
 import { motion } from "framer-motion";
+import { ThemeProvider } from "@mui/material";
+import { theme } from "../../../config/theme";
 
 const Layout = ({ children }) => {
    const animation = {
@@ -24,18 +26,24 @@ const Layout = ({ children }) => {
    useLayoutEffect(() => {}, []);
    return (
       <>
-         <motion.div variants={animation} initial="initial" animate="animate">
-            <header>
-               <Header />
-            </header>
-            <div className={clsx("content", layoutState)}>
-               <div className="content-space"></div>
-               <Outlet layoutState={layoutState} />
-            </div>
-            <footer>
-               <Footer />
-            </footer>
-         </motion.div>
+         <ThemeProvider theme={theme}>
+            <motion.div
+               variants={animation}
+               initial="initial"
+               animate="animate"
+            >
+               <header>
+                  <Header />
+               </header>
+               <div className={clsx("content", layoutState)}>
+                  <div className="content-space"></div>
+                  <Outlet layoutState={layoutState} />
+               </div>
+               <footer>
+                  <Footer />
+               </footer>
+            </motion.div>
+         </ThemeProvider>
       </>
    );
 };

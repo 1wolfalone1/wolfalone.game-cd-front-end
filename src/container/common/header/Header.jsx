@@ -18,13 +18,18 @@ import LoginIcon from "@mui/icons-material/Login";
 import PersonAddAlt1OutlinedIcon from "@mui/icons-material/PersonAddAlt1Outlined";
 import { style } from "../../../style/custom/custom";
 import UserInfoDropDown from "../../../component/header/userInfoDropDown/UserInfoDropDown";
+import { Tab, Tabs } from "@mui/material";
 export default function Header() {
    const [isActive, setIsActive] = React.useState(false);
    const navigate = useNavigate();
    const user = useSelector(statusSelector);
    const userInfo = useSelector(infoUserSelector);
    const [name, setUserName] = useState("");
+   const [value, setValue] = React.useState("1");
 
+   const handleChange = (event, newValue) => {
+      setValue(newValue);
+   };
    useEffect(() => {
       if (userInfo) {
          setUserName(userInfo.name);
@@ -69,23 +74,47 @@ export default function Header() {
    }, []);
    return (
       <div className={clsx(s.header)}>
-         <div className={s.logo}>
-            <img src={Logo} alt="" />
-         </div>
-         <div className={clsx(s.navContainer)}>
-            <ButtonHeader
-               content="Home"
-               active
-               className="HeaderLink"
-               onClick={pageNavigate("/")}
-            />
-            <ButtonHeader content="Market" className="HeaderLink" />
-            <ButtonHeader content="Cart" className="HeaderLink" />
-            {user === "user" ? (
-               <ButtonHeader content="Orders" className="HeaderLink" />
-            ) : (
-               ""
-            )}
+         <div style={{display: 'flex', alignItems:'center', gap: '10rem'}}>
+            <div className={s.logo}>
+               <img src={Logo} alt="" />
+            </div>
+            <Tabs
+               value={value}
+               onChange={handleChange}
+               color="Complementary2"
+               aria-label="secondary tabs example"
+               className={clsx(s.tabs)}
+               TabIndicatorProps={{
+                  sx: {
+                     backgroundColor: style.color.$Accent1,
+                  },
+               }}
+            >
+               <Tab
+                  label="Home"
+                  className="HeaderLink"
+                  value="1"
+                  onClick={pageNavigate("/")}
+               />
+               <Tab
+                  className="HeaderLink"
+                  value="2"
+                  label="Market"
+                  onClick={() => navigate("/games")}
+               />
+               <Tab className="HeaderLink" value="3" label="Cart" />
+               {user === "user" ? (
+                  <Tab
+                     content="Orders"
+                     className="HeaderLink"
+                     value="4"
+                     label="Orders"
+                  />
+               ) : (
+                  ""
+               )}
+               <Tab className={s.tabnone} value="5" label="" />
+            </Tabs>
          </div>
          {user === "guest" ? (
             <div className={clsx(s.rightNav)}>
@@ -117,7 +146,10 @@ export default function Header() {
          ) : (
             <div className={clsx(s.userInfoContainer)} ref={refUserInfo}>
                <div className={clsx(s.userInfo)}>
-               <div className={clsx(s.userAvatar)} onClick={() => setIsActive(false)}>
+                  <div
+                     className={clsx(s.userAvatar)}
+                     onClick={() => setIsActive(false)}
+                  >
                      <img
                         src={userInfo.image}
                         alt=""
@@ -125,13 +157,16 @@ export default function Header() {
                      />
                   </div>
                   <span className={clsx(s.userName)}>{name}</span>
-                  <motion.div variants={iconRotateAnimation} animate="animate" style={{padding: '2rem'}}>
+                  <motion.div
+                     variants={iconRotateAnimation}
+                     animate="animate"
+                     style={{ padding: "2rem" }}
+                  >
                      <FontAwesomeIcon
                         icon={faGear}
                         className={clsx(s.iconDown)}
                      />
                   </motion.div>
-                  
                </div>
                <UserInfoDropDown isActive={isActive} refne={ref} />
             </div>

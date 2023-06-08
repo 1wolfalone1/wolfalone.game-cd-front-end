@@ -23,6 +23,18 @@
    left: 50%;
    transform: translateX(-50%);
    z-index: 100;
+
+   .tabs {
+      button {
+         color: c.$Accent1;
+         font-size: 2rem;
+         padding: 2rem;
+         font-family: c.$Font2;
+      }
+      :global(.Mui-selected) {
+         color: c.$Complementary1;
+      }
+   }
    .logo {
       display: flex;
       flex-direction: column;
@@ -109,9 +121,13 @@
 
       border-radius: 90px;
    }
-
- 
 }
 .iconButtonLogin {
    width: 1000px;
+}
+
+.tabnone {
+   min-width: 0px !important;
+   padding: 0 !important;
+   overflow: hidden;
 }
