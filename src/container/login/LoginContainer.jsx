@@ -7,7 +7,7 @@ import clsx from "clsx";
 import { Button, FormHelperText, TextField } from "@mui/material";
 import { style } from "../../style/custom/custom";
 import ButtonGoogle from "../../component/button/buttonGoogle/ButtonGoogle";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { getData, getLogin } from "../../api/authenticationApi";
 import { GoogleLogin, googleLogout, useGoogleLogin } from "@react-oauth/google";
 import { useCookies } from "react-cookie";
@@ -24,6 +24,7 @@ export default function LoginContainer() {
    const [username, setUserName] = useState("");
    const [password, setPassword] = useState("");
    const navigate = useNavigate();
+   const location = useLocation();
    const login = useGoogleLogin({
       onSuccess: (response) => {
          handleGoogle(response);
@@ -46,7 +47,6 @@ export default function LoginContainer() {
    };
    const handle200 = (response) => {
       dispatch(
-         
          userInfoSlice.actions.changeAuthentication({
             status: "user",
             info: {
@@ -60,7 +60,22 @@ export default function LoginContainer() {
 
    useLayoutEffect(() => {
       dispatch(layoutSlice.actions.updateLayout("loginLayout"));
-
+      const params = new URLSearchParams(location.search);
+      if (params) {
+         if (params.get("auth") == 406) {
+            setLoginStatus("Session login is expired");
+            dispatch(
+               userInfoSlice.actions.changeAuthentication({
+                  status: "guest",
+                  info: {},
+               })
+            );
+         } else if (params.get("auth") == 403) {
+            setLoginStatus("You are not authorized to access this resource!");
+         } else {
+            setLoginStatus("You need login to continues!");
+         }
+      }
       return () => {
          dispatch(layoutSlice.actions.updateLayout(""));
       };
@@ -70,7 +85,7 @@ export default function LoginContainer() {
          const response = await api.post("/oauth2/google", data);
          console.log(response);
          if (response.status === 200) {
-            handle200(response)
+            handle200(response);
          }
       } catch (error) {
          console.error(error, "dataaaaaa");
@@ -83,22 +98,20 @@ export default function LoginContainer() {
             email: username,
             token: password,
          });
-         console.log(response, '111111111');
+         console.log(response, "111111111");
          if (response.status === 200) {
-            handle200(response)
-         } 
+            handle200(response);
+         }
       } catch (error) {
          const response = error.response;
-         if(response.status ===406){
-            setLoginStatus("Invalid username or password!!! Try again.")
+         if (response.status === 406) {
+            setLoginStatus("Invalid username or password!!! Try again.");
          } else {
-            setLoginStatus("Something wrong!!! Try again.")
+            setLoginStatus("Something wrong!!! Try again.");
          }
-         
       }
    };
 
-   
    return (
       <motion.div
          variants={animation}
@@ -117,7 +130,7 @@ export default function LoginContainer() {
                onChange={(e) => {
                   setUserName(e.target.value);
                }}
-               onFocus={() => setLoginStatus('')}
+               onFocus={() => setLoginStatus("")}
                value={username}
                sx={{
                   width: "80%",
@@ -143,18 +156,16 @@ export default function LoginContainer() {
                onChange={(e) => {
                   setPassword(e.target.value);
                }}
-               onFocus={() => setLoginStatus('')}
+               onFocus={() => setLoginStatus("")}
                value={password}
                helperText={loginStatus}
-               FormHelperTextProps={
-                  {
-                     style:{
-                        fontSize: "1.6rem",
-                        color: "#ffac5f", 
-                        marginLeft: '0px'
-                     }
-                  }
-               }
+               FormHelperTextProps={{
+                  style: {
+                     fontSize: "1.6rem",
+                     color: "#ffac5f",
+                     marginLeft: "0px",
+                  },
+               }}
                sx={{
                   width: "80%",
                   color: "warning",

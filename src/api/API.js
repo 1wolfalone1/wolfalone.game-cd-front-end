@@ -1,6 +1,6 @@
 import axios from "axios";
-import { LOCAL_URL } from './apiConfig';
-import qs  from "qs";
+import { LOCAL_URL } from "./apiConfig";
+import qs from "qs";
 
 export const apid = axios.create({
    baseURL: `${LOCAL_URL}`,
@@ -9,7 +9,11 @@ export const apid = axios.create({
       "Access-Control-Allow-Origin": "*",
    },
 });
-apid.defaults.paramsSerializer = params => qs.stringify(params, {arrayFormat: 'repeat'})
+apid.defaults.paramsSerializer = (params) =>
+   qs.stringify(params, {
+      arrayFormat: "brackets",
+      encode: false,
+   });
 apid.interceptors.request.use(
    (config) => {
       if (!config.headers.Authorization) {
@@ -18,8 +22,26 @@ apid.interceptors.request.use(
             config.headers.Authorization = `Bearer ${token.token}`;
          }
       }
+      console.log(config);
+      console.log(config);
+      console.log(config.baseURL);
 
       return config;
    },
    (error) => Promise.reject(error)
+);
+apid.interceptors.response.use(
+   (response) => {
+      console.log(response);
+      // Edit response config
+      return response;
+   },
+   (error) => {
+      console.log(error);
+      if (error.response.status === 403) {
+         window.location.href = "/login?auth=403";
+      } else if (error.response.status === 406) {
+         window.location.href = "/login?auth=406";
+      }
+   }
 );

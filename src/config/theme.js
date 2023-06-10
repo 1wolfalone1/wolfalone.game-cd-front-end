@@ -28,7 +28,7 @@ export const theme = createTheme({
       },
       Accent1: {
          main: "#c6cfff",
-         // contrastText: "rgb(4, 0, 30)",
+         contrastText: "rgb(4, 0, 30)",
       },
       Accent2: {
          main: "#622773",

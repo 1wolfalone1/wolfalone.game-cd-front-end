@@ -12,6 +12,7 @@ import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import userInfoSlice from "./redux/global/userInfoSlice";
 import GamesPageContainer from "./container/games-page/GamesPageContainer";
+import GameDetails from "./container/game-details/GameDetails";
 
 const darkTheme = createTheme({
    palette: {
@@ -37,11 +38,12 @@ function App() {
       <ThemeProvider theme={darkTheme}>
          <CssBaseline />
          <Routes>
-            <Route element={<Layout />}>
+            <Route path='/' element={<Layout />}>
                <Route index element={<HomeContainer />} />
-               <Route path="/login" element={<LoginContainer />} />
-               <Route path="/signup" element={<RegistrationContainer />} />
-               <Route path="/games" element={<GamesPageContainer />} />
+               <Route path="login" element={<LoginContainer />} />
+               <Route path="signup" element={<RegistrationContainer />} />
+               <Route path="games" element={<GamesPageContainer />} />
+               <Route path="game-details/:id" element={<GameDetails />} />
             </Route>
          </Routes>
       </ThemeProvider>

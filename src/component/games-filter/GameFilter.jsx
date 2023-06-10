@@ -26,6 +26,13 @@ import {
 import { apid } from "../../api/API";
 import { style } from "../../style/custom/custom";
 import clsx from "clsx";
+import productSlice, {
+   filterSelector,
+   getGameAndFilterAndPaging,
+   getGameAndPaging,
+} from "../../redux/global/productsSlice";
+import { useDispatch, useSelector } from "react-redux";
+import CloseIcon from '@mui/icons-material/Close';
 const Search = styled("div")(({ theme }) => ({
    position: "relative",
    borderRadius: theme.shape.borderRadius,
@@ -100,20 +107,14 @@ const SelectStyle = styled(Select)(({ theme }) => ({
    width: "20rem",
    "& .MuiMenuItem-dense": {
       backgroundColor: "#343434 !important",
-   }
-
+   },
 }));
-const Component = React.forwardRef((props, ref) => <SelectStyle />);
 export default function GameFilter() {
    const [isFilterOpen, setIsFilterOpen] = useState(false);
    const [categories, setCategories] = useState([]);
-   const [categorySelected, setCategorySelected] = useState(0);
-   const handleCategorySelected = (event) => {
-      const {
-         target: { value },
-      } = event;
-      setCategorySelected(value);
-   };
+   const filter = useSelector(filterSelector);
+   const dispatch = useDispatch();
+
    const animation = {
       init: {
          opacity: 0,
@@ -130,17 +131,25 @@ export default function GameFilter() {
       },
    };
    const getCategories = async () => {
-      const response = await apid.get("/category");
-      const data = await response.data;
-      console.log(data);
-      setCategories(data);
+      try {
+         const response = await apid.get("/category");
+         const data = await response.data;
+         console.log(data);
+         setCategories(data);
+      } catch (e) {
+         console.error(e);
+      }
    };
    useEffect(() => {
       getCategories();
    }, []);
+   const handleFilter = () => {
+      dispatch(getGameAndFilterAndPaging(1));
+   };
+
    return (
-      <Stack justifyContent={'center'}>
-         <Box sx={{}} my={"1rem"} display={"flex"} justifyContent={'center'}>
+      <Stack justifyContent={"center"}>
+         <Box sx={{}} my={"1rem"} display={"flex"} justifyContent={"center"}>
             <Search>
                <SearchIconWrapper>
                   <SearchIcon sx={{ fontSize: "3rem" }} />
@@ -148,16 +157,26 @@ export default function GameFilter() {
                <StyledInputBase
                   placeholder="Search…"
                   inputProps={{ "aria-label": "search" }}
+                  value={filter.name}
+                  onChange={(e) =>
+                     dispatch(
+                        productSlice.actions.changeSearchValue(e.target.value)
+                     )
+                  }
                />
             </Search>
             <ButtonStyle
                variant="outlined"
                color="Accent5"
                onClick={() => {
+                  if(isFilterOpen){
+                     dispatch(productSlice.actions.resetFilter());
+                     dispatch(getGameAndPaging(1));
+                  }
                   setIsFilterOpen(!isFilterOpen);
                }}
             >
-               Filter
+               {isFilterOpen ? <CloseIcon  sx={{fontSize: '3rem'}}/> : "Filter"}
             </ButtonStyle>
          </Box>
          <motion.div
@@ -166,12 +185,11 @@ export default function GameFilter() {
             variant={animation}
             initial="init"
             animate="animate"
-            style={{width:'100%', display: 'flex'}}
-            className="dfasfdasfasdfasdf"
+            style={{ width: "100%", display: "flex" }}
          >
             {isFilterOpen && (
                <>
-                  <Box display="flex" alignItems={"center"} fullWidth w='100%'>
+                  <Box display="flex" alignItems={"center"} fullWidth w="100%">
                      <FormControl color="Accent1">
                         <InputLabel
                            id="demo-multiple-checkbox-label"
@@ -183,12 +201,17 @@ export default function GameFilter() {
                            Categories
                         </InputLabel>
                         <SelectStyle
-                           disableScrollLock
                            id="demo-multiple-checkbox-label"
                            label="Category"
                            input={<OutlinedInput label="Categories" />}
-                           value={categorySelected}
-                           onChange={handleCategorySelected}
+                           value={filter.category}
+                           onChange={(e) =>
+                              dispatch(
+                                 productSlice.actions.changeCategotyID(
+                                    e.target.value
+                                 )
+                              )
+                           }
                            sx={{ fontSize: "2rem", width: "none" }}
                            MenuProps={MenuProps}
                            className={clsx(s.listmenu)}
@@ -231,6 +254,14 @@ export default function GameFilter() {
                                  color: style.color.$Accent1,
                               },
                            }}
+                           value={filter.price.from}
+                           onChange={(e) =>
+                              dispatch(
+                                 productSlice.actions.changeFromPriceValue(
+                                    e.target.value
+                                 )
+                              )
+                           }
                         />
                         <Typography
                            sx={{
@@ -249,12 +280,21 @@ export default function GameFilter() {
                                  color: style.color.$Accent1,
                               },
                            }}
+                           value={filter.price.to}
+                           onChange={(e) =>
+                              dispatch(
+                                 productSlice.actions.changeToPriceValue(
+                                    e.target.value
+                                 )
+                              )
+                           }
                         />
                      </Box>
                      <Button
                         color="Complementary1"
                         variant="outlined"
                         sx={{ fontSize: "2.4rem", padding: "0rem 3rem" }}
+                        onClick={handleFilter}
                      >
                         {" "}
                         Find

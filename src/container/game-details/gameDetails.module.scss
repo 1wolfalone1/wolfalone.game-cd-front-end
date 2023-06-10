@@ -1,0 +1,9 @@
+@use '../../style/common/' as c;
+
+.description {
+   padding: 2rem 4rem;
+   p {
+      font-size: 2.4rem;
+      color: c.$Complementary2;
+   }
+}
