@@ -12,60 +12,58 @@ const buttonStyle = {
 export default function GameCard({ game }) {
    const navigate = useNavigate();
    console.log(game);
- 
+
    return (
-         <div
-   
-            className={s.container}
-            key={game.id}
-         >
-            <div className={s.image}>
-               <img src={game.imgUrl} alt="" />
+      <AnimatePresence initial={false}>
+      <div className={s.container} key={game.id}>
+         <div className={s.image}>
+            <img src={game.imgUrl} alt="" />
+         </div>
+         <div className={s.content}>
+            <div className={s.name}>
+               <span>{game.name}</span>
             </div>
-            <div className={s.content}>
-               <div className={s.name}>
-                  <span>{game.name}</span>
+            <div className={s.types}>
+               {game.listCategory.map((cate) => (
+                  <Chip
+                     label={cate.name}
+                     key={cate.id}
+                     sx={{
+                        fontSize: "1.6rem",
+                        color: style.color.$Dominant1,
+                     }}
+                  />
+               ))}
+            </div>
+            <div className={s.price}>
+               <div className={s.left}>
+                  <span>{game.price}$</span>
                </div>
-               <div className={s.types}>
-                  {game.listCategory.map((cate) => (
-                     <Chip
-                        label={cate.name}
-                        key={cate.id}
-                        sx={{
-                           fontSize: "1.6rem",
-                           color: style.color.$Dominant1,
-                        }}
-                     />
-                  ))}
+               <div className={s.right}>
+                  <span>
+                     {game.quantity !== 0 ? "Unavailable" : "Available"}
+                  </span>
                </div>
-               <div className={s.price}>
-                  <div className={s.left}>
-                     <span>{game.price}$</span>
-                  </div>
-                  <div className={s.right}>
-                     <span>
-                        {game.quantity !== 0 ? "Unavailable" : "Available"}
-                     </span>
-                  </div>
-               </div>
-               <div className={s.button}>
-                  <Button
-                     variant="outlined"
-                     sx={buttonStyle}
-                     color="Complementary1"
-                  >
-                     Add to cart
-                  </Button>
-                  <Button
-                     variant="outlined"
-                     sx={buttonStyle}
-                     color="Complementary1"
-                     onClick={() => navigate(`/game-details/${game.id}`)}
-                  >
-                     View details
-                  </Button>
-               </div>
+            </div>
+            <div className={s.button}>
+               <Button
+                  variant="outlined"
+                  sx={buttonStyle}
+                  color="Complementary1"
+               >
+                  Add to cart
+               </Button>
+               <Button
+                  variant="outlined"
+                  sx={buttonStyle}
+                  color="Complementary1"
+                  onClick={() => navigate(`/game-details/${game.id}`)}
+               >
+                  View detailsss
+               </Button>
             </div>
          </div>
+      </div>
+      </AnimatePresence>
    );
 }

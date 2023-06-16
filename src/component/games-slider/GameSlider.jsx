@@ -23,8 +23,7 @@ export default function GameSlider() {
    return (
       <>
          {page ? (
-            <motion.div
-               layout
+            <div
                style={{ width: "100%" }}
                className={s.containerSlider}
             >
@@ -36,7 +35,7 @@ export default function GameSlider() {
                   onChange={handleChange}
                   page={page.currentPage}
                />
-            </motion.div>
+            </div>
          ) : (
             ""
          )}
