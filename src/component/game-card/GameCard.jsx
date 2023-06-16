@@ -51,7 +51,7 @@ export default function GameCard({ game }) {
                   sx={buttonStyle}
                   color="Complementary1"
                >
-                  Add to cart
+                  Add to carttt
                </Button>
                <Button
                   variant="outlined"
