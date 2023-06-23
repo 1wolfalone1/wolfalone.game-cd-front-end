@@ -6,27 +6,39 @@ import ButtonHeader from "../../../component/button/ButtonHeader";
 import avatar from "../../../asset/img/useravatar/1677772071906.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faA, faCaretDown, faGear } from "@fortawesome/free-solid-svg-icons";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
    infoUserSelector,
    statusSelector,
 } from "../../../redux/global/userInfoSlice";
 import { motion } from "framer-motion";
-
-import { Link, useNavigate } from "react-router-dom";
+import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
+import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
+import StoreOutlinedIcon from "@mui/icons-material/StoreOutlined";
+import ListAltOutlinedIcon from "@mui/icons-material/ListAltOutlined";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import LoginIcon from "@mui/icons-material/Login";
 import PersonAddAlt1OutlinedIcon from "@mui/icons-material/PersonAddAlt1Outlined";
 import { style } from "../../../style/custom/custom";
 import UserInfoDropDown from "../../../component/header/userInfoDropDown/UserInfoDropDown";
-import { Tab, Tabs } from "@mui/material";
+import { Badge, Box, Tab, Tabs, Typography } from "@mui/material";
+import { cartSliceSelector } from "../../../redux/global/cartSlice";
+import globalSlice, { globalSliceSelector } from "../../../redux/global/globalSlice";
+
+const iconStyle = {
+   fontSize: "2.4rem",
+};
+const boxStyle = { display: "flex", alignItems: "center", gap: "0.4rem" };
 export default function Header() {
+   const {navActive} = useSelector(globalSliceSelector);
+   const { items } = useSelector(cartSliceSelector);
    const [isActive, setIsActive] = React.useState(false);
    const navigate = useNavigate();
    const user = useSelector(statusSelector);
    const userInfo = useSelector(infoUserSelector);
    const [name, setUserName] = useState("");
    const [value, setValue] = React.useState("1");
-
+  
    const handleChange = (event, newValue) => {
       setValue(newValue);
    };
@@ -74,12 +86,12 @@ export default function Header() {
    }, []);
    return (
       <div className={clsx(s.header)}>
-         <div style={{display: 'flex', alignItems:'center', gap: '10rem'}}>
+         <div style={{ display: "flex", alignItems: "center", gap: "10rem" }}>
             <div className={s.logo}>
                <img src={Logo} alt="" />
             </div>
             <Tabs
-               value={value}
+               value={`${navActive}`}
                onChange={handleChange}
                color="Complementary2"
                aria-label="secondary tabs example"
@@ -91,7 +103,11 @@ export default function Header() {
                }}
             >
                <Tab
-                  label="Home"
+                  label={
+                     <Box sx={boxStyle}>
+                        Home <HomeOutlinedIcon sx={iconStyle} />
+                     </Box>
+                  }
                   className="HeaderLink"
                   value="1"
                   onClick={pageNavigate("/")}
@@ -99,16 +115,46 @@ export default function Header() {
                <Tab
                   className="HeaderLink"
                   value="2"
-                  label="Market"
+                  label={
+                     <Box sx={boxStyle}>
+                        Market <StoreOutlinedIcon sx={iconStyle} />
+                     </Box>
+                  }
                   onClick={() => navigate("/games")}
                />
-               <Tab className="HeaderLink" value="3" label="Cart" />
+               <Tab
+                  className="HeaderLink"
+                  value="3"
+                  onClick={()=> navigate('/cart')}
+                  label={
+                     <Box sx={boxStyle}>
+                        Cart
+                        <Badge
+                           badgeContent={items?.length}
+                           color="secondary"
+                           sx={{
+                              "& .MuiBadge-badge": {
+                                 fontSize: 12,
+                                 height: 20,
+                                 minWidth: 20,
+                              },
+                           }}
+                        >
+                           <ShoppingCartOutlinedIcon sx={iconStyle} />
+                        </Badge>
+                     </Box>
+                  }
+               />
                {user === "user" ? (
                   <Tab
                      content="Orders"
                      className="HeaderLink"
                      value="4"
-                     label="Orders"
+                     label={
+                        <Box sx={boxStyle}>
+                           Orders <ListAltOutlinedIcon sx={iconStyle} />
+                        </Box>
+                     }
                   />
                ) : (
                   ""

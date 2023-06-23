@@ -17,6 +17,7 @@ export default function GameSlider() {
    const dispatch = useDispatch();
    const handleChange = (event, value) => {
       console.log(event.target.value, page, value, "-----------------value");
+      window.scrollTo(0, 0)
       dispatch(getGameAndFilterAndPaging(value));
    };
    console.log(page);

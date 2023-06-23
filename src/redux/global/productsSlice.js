@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { number } from "yup";
 import { apid } from "../../api/API";
+import globalSlice from "./globalSlice";
 
 export const getGameStatus = {
    PENDING: 0,
@@ -75,13 +76,17 @@ const productSlice = createSlice({
 export default productSlice;
 export const getGameAndPaging = createAsyncThunk(
    "game/getGameAndPaging",
-   async (page) => {
+   async (page, { dispatch }) => {
+      dispatch(globalSlice.actions.changeBackdrop(true));
       try {
          const response = await apid.get(`games/${page}`);
          const data = await response.data;
          data.currentPage = page;
+         dispatch(globalSlice.actions.changeBackdrop(false));
+
          return data;
       } catch (e) {
+         dispatch(globalSlice.actions.changeBackdrop(false));
          console.error(e);
       }
    }
@@ -89,8 +94,10 @@ export const getGameAndPaging = createAsyncThunk(
 
 export const getGameAndFilterAndPaging = createAsyncThunk(
    "game/filterAndPaging",
-   async (page, { getState }) => {
+   async (page, { getState, dispatch }) => {
       const state = getState();
+      dispatch(globalSlice.actions.changeBackdrop(true));
+
       try {
          const response = await apid.get(`/games/search/${page}`, {
             params: {
@@ -102,8 +109,11 @@ export const getGameAndFilterAndPaging = createAsyncThunk(
          });
          const data = await response.data;
          data.currentPage = page;
+         dispatch(globalSlice.actions.changeBackdrop(false));
+
          return data;
       } catch (e) {
+         dispatch(globalSlice.actions.changeBackdrop(false));
          console.log(e);
       }
    }

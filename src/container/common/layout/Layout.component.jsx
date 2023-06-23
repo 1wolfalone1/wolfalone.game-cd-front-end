@@ -7,10 +7,13 @@ import { useSelector } from "react-redux";
 import { statusLayoutSelector } from "./layoutSlice";
 import { useEffect, useLayoutEffect } from "react";
 import { motion } from "framer-motion";
-import { ThemeProvider } from "@mui/material";
+import { Backdrop, CircularProgress, ThemeProvider } from "@mui/material";
 import { theme } from "../../../config/theme";
+import { globalSliceSelector } from "../../../redux/global/globalSlice";
 
 const Layout = ({ children }) => {
+   const {openBackdrop} = useSelector(globalSliceSelector);
+   console.log(openBackdrop, 'backdasdfasdfasdfasdfasdfasfdasdfrop');
    const animation = {
       initial: {
          opacity: 0.5,
@@ -27,6 +30,15 @@ const Layout = ({ children }) => {
    return (
       <>
          <ThemeProvider theme={theme}>
+         <Backdrop
+               sx={{
+                  color: "#fff",
+                  zIndex: (theme) => theme.zIndex.drawer + 1,
+               }}
+               open={openBackdrop}
+            >
+               <CircularProgress color="inherit" />
+            </Backdrop>
             <motion.div
                variants={animation}
                initial="initial"

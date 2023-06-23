@@ -7,7 +7,9 @@ import store from "./redux/store";
 import { Provider } from "react-redux";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import { CLIENT_ID } from "./config/authentication";
-import { CookiesProvider } from 'react-cookie';
+import { CookiesProvider } from "react-cookie";
+import persistStore from "redux-persist/es/persistStore";
+import { PersistGate } from "redux-persist/integration/react";
 const root = ReactDOM.createRoot(document.getElementById("root"));
 // function createRipple(event) {
 //    const button = event.currentTarget;
@@ -35,13 +37,15 @@ const root = ReactDOM.createRoot(document.getElementById("root"));
 //  for (const button of buttons) {
 //    button.addEventListener("click", createRipple);
 //  }
+let persistor = persistStore(store);
 root.render(
    <React.StrictMode>
-
       <GoogleOAuthProvider clientId={CLIENT_ID}>
          <BrowserRouter>
             <Provider store={store}>
-               <App />
+               <PersistGate persistor={persistor}>
+                  <App />
+               </PersistGate>
             </Provider>
          </BrowserRouter>
       </GoogleOAuthProvider>

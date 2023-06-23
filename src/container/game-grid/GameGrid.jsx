@@ -10,6 +10,7 @@ import {
    domAnimation,
 } from "framer-motion";
 import { motion } from "framer-motion";
+import { Fade } from "@mui/material";
 export default function GameGrid({ games }) {
    const id = useId();
    const animation = {
@@ -30,48 +31,23 @@ export default function GameGrid({ games }) {
       },
    };
    return (
-      <AnimatePresence mode="wait">
-         <motion.div
+         <div
             key={id}
-            variants={animation}
-            initial="init"
-            animate="animate"
-            exit="exit"
-            layout
             style={{ width: "100%" }}
          >
             <>
-               {games ? (
-                  <AnimatePresence>
-                     <motion.div
-                        initial={{ x: 300, opacity: 0 }}
-                        animate={{ x: 0, opacity: 1 }}
-                        exit={{ x: -300, opacity: 0 }}
-                     >
-                        <Grid container>
-                           {games.map((game) => {
-                              return (
-                                    <Grid
-                                       xl={3}
-                                       lg={4}
-                                       md={6}
-                                       sm={12}
-                                       key={game.id}
-                                    >
-                                       <GameCard game={game} />
-                                    </Grid>
-                              );
-                           })}
-                        </Grid>
-                     </motion.div>
-                  </AnimatePresence>
-               ) : (
-                  <div style={{height: '100px'}}>
-
-                  </div>
+               {games && (
+                  <Grid container>
+                     {games.map((game) => {
+                        return (
+                           <Grid xl={3} lg={4} md={6} sm={12} key={game.id}>
+                              <GameCard game={game} />
+                           </Grid>
+                        );
+                     })}
+                  </Grid>
                )}
             </>
-         </motion.div>
-      </AnimatePresence>
+         </div>
    );
 }
