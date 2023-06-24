@@ -9,6 +9,7 @@ import CartItems from "../../component/cart-items/CartItems";
 
 export default function CartContainer() {
    const {items} = useSelector(cartSliceSelector);
+   console.log(items)
    return (
       <Stack>
          <Box sx={{display: 'flex', justifyContent: 'center', padding: '1rem'}}>

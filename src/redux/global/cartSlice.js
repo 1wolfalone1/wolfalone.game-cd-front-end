@@ -14,7 +14,7 @@ export default createSlice({
          const item = state.items.find((item) => item.id === action.payload.id);
          if (!item) {
             if (action.payload.quantity > 0) {
-               state.items.push(action.payload);
+               state.items.push({ ...action.payload, cartQuantity: 1 });
                state.status = {
                   ...state.status,
                   msg: "Add to cart successfully!",
@@ -36,11 +36,53 @@ export default createSlice({
          }
       },
       changeQuantity: (state, action) => {
-         state.status = {
-            ...state.status,
-            msg: "You already have a game in your cart!",
-            isValid: true,
-         };
+         console.log(typeof +action.payload.quantity);
+         console.log(Number(action.payload.quantity), 'dfasdfjkhjasdfjklhasjkldfjkalsdfjasdflkjasdfljasdf')
+         if(Number(action.payload.quantity) === 0 || action.payload.quantity === '') {
+            state.items = state.items.map(item => {
+               if(item.id === action.payload.id){
+                  return {...item, cartQuantity: +0}
+               } else {
+                  return item;
+               }
+            })
+         }
+         if (
+            typeof Number(action.payload.quantity) !== "number" ||
+            isNaN(Number(action.payload.quantity))
+         ) {
+            console.log("not a number", action.payload.quantity);
+         } else {
+            state.items = state.items.map((item) => {
+               console.log(item.id);
+               if (item.id === action.payload.id) {
+                  const newQuantity = action.payload.quantity;
+                  console.log("newQuantity", newQuantity);
+                  if (newQuantity < 0) {
+                     state.status = {
+                        ...state.status,
+                        msg: "Invalid quantity",
+                        isValid: false,
+                     };
+                     return item;
+                  } else if (newQuantity > item.quantity) {
+                     state.status = {
+                        ...state.status,
+                        msg: "You are trying to add exceeding current quantity",
+                        isValid: false,
+                     };
+                     return item;
+                  } else {
+                     return { ...item, cartQuantity: newQuantity };
+                  }
+               } else {
+                  return item;
+               }
+            });
+         }
+      },
+      removeItems: (state, action) => {
+         state.items = state.items.filter((item) => item.id !== action.payload);
       },
    },
 });
