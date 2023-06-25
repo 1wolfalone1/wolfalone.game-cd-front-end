@@ -3,7 +3,7 @@ import { LOCAL_URL } from "./apiConfig";
 import qs from "qs";
 
 export const apid = axios.create({
-   baseURL: `${LOCAL_URL}`,
+   baseURL: `${process.env.REACT_APP_BASE_URL}`,
    withCredentials: true,
    headers: {
       "Access-Control-Allow-Origin": "*",

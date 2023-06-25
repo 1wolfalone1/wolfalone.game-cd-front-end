@@ -2,9 +2,9 @@ import { Start } from "@mui/icons-material";
 import axios from "axios";
 
 const api = axios.create({
-   baseURL: "http://localhost:3005/api/v1/authentication",
+   baseURL: `${process.env.REACT_APP_BASE_URL}/authentication`,
    headers: {
-      "Access-Control-Allow-Origin": "http://localhost:3000",
+      "Access-Control-Allow-Origin": "*",
    },
 });
 export default api;
