@@ -40,10 +40,11 @@ export const theme = createTheme({
       },
       Accent1: {
          main: "#c6cfff",
-         contrastText: "rgb(4, 0, 30)",
+         contrastText: "rgb(20, 20, 20)",
       },
       Accent2: {
          main: "#622773",
+         contrastText: "#c6cfff"
       },
       Accent3: {
          main: "#4a1259",

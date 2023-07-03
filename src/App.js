@@ -16,6 +16,8 @@ import GameDetails from "./container/game-details/GameDetails";
 import globalSlice from "./redux/global/globalSlice";
 import CartContainer from "./container/cart-container/CartContainer";
 import UserProfile from "./container/user-profile/UserProfile";
+import OrderPage from "./container/order-page/OrderPage";
+import OrderHistory from "./container/order-history/OrderHistory";
 
 const darkTheme = createTheme({
    palette: {
@@ -50,6 +52,8 @@ function App() {
                <Route path="game-details/:id" element={<GameDetails />} />
                <Route path="cart" element={<CartContainer />} />
                <Route path="profile" element={<UserProfile />} />
+               <Route path="order" element={<OrderPage />} />
+               <Route path="order-history" element={<OrderHistory />} />
             </Route>
          </Routes>
       </ThemeProvider>
