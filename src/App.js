@@ -15,6 +15,7 @@ import GamesPageContainer from "./container/games-page/GamesPageContainer";
 import GameDetails from "./container/game-details/GameDetails";
 import globalSlice from "./redux/global/globalSlice";
 import CartContainer from "./container/cart-container/CartContainer";
+import UserProfile from "./container/user-profile/UserProfile";
 
 const darkTheme = createTheme({
    palette: {
@@ -35,18 +36,7 @@ function App() {
          dispatch(globalSlice.actions.changeNavActive(3));
       }
    }, [location]);
-   useEffect(() => {
-      const user = localStorage.getItem("user");
-      if (user) {
-         console.log(user)
-         dispatch(
-            userInfoSlice.actions.changeAuthentication({
-               status: "user",
-               info: JSON.parse(user),
-         })
-         );
-      }
-   }, []);
+  
 
    return (
       <ThemeProvider theme={darkTheme}>
@@ -59,6 +49,7 @@ function App() {
                <Route path="games" element={<GamesPageContainer />} />
                <Route path="game-details/:id" element={<GameDetails />} />
                <Route path="cart" element={<CartContainer />} />
+               <Route path="profile" element={<UserProfile />} />
             </Route>
          </Routes>
       </ThemeProvider>

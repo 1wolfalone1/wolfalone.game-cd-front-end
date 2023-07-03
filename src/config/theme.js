@@ -2,6 +2,18 @@ import { createTheme } from "@mui/material";
 
 export const theme = createTheme({
    palette: {
+      primary: {
+         main: "#e2e2e2",
+         contrastText: "#622773",
+      },
+      secondary: {
+         main: "#fff8c8",
+         contrastText: "#4a1259",
+      },
+      disabled: {
+         main: "#fff8c8",
+         contrastText: "#4a1259",
+      },
       Complementary1: {
          main: "#fff8c8",
       },
@@ -42,6 +54,9 @@ export const theme = createTheme({
       Accent5: {
          main: "#200726",
       },
+   },
+   typography: {
+      fontSize: 24,
    },
 
    // overrides: {

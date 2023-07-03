@@ -11,9 +11,12 @@ import { AnimatePresence, motion } from "framer-motion";
 import useId from "@mui/material/utils/useId";
 import { useDispatch } from "react-redux";
 import userInfoSlice from "../../../redux/global/userInfoSlice";
+import { useNavigate } from "react-router-dom";
+import { Button } from "@mui/material";
 
 export default function UserInfoDropDown({ isActive, refne }) {
    const id = useId();
+   const navigate = useNavigate();
    const dispatch = useDispatch();
    const dropdownAnimation = {
       initial: {
@@ -60,27 +63,27 @@ export default function UserInfoDropDown({ isActive, refne }) {
             >
                <div className={clsx(s.space)}></div>
                <div className={clsx(s.content)} ref={refne}>
-                  <div className={clsx(s.item)}>
+                  <Button className={clsx(s.item)} fullWidth>
                      <span>Notification</span>
                      <FontAwesomeIcon
                         icon={faEnvelope}
                         className={clsx(s.icon)}
                      />
-                  </div>
-                  <div className={clsx(s.item)}>
+                  </Button>
+                  <Button className={clsx(s.item)} onClick={() => navigate('/profile')} fullWidth>
                      <span>Profile</span>
                      <FontAwesomeIcon
                         icon={faAddressCard}
                         className={clsx(s.icon)}
                      />
-                  </div>
-                  <div className={clsx(s.item)} onClick={() => {handleLogout()}}>
+                  </Button>
+                  <Button className={clsx(s.item)} onClick={() => {handleLogout()}} fullWidth>
                      <span>Log out</span>
                      <FontAwesomeIcon
                         icon={faArrowRightFromBracket}
                         className={clsx(s.icon)}
                      />
-                  </div>
+                  </Button>
                </div>
             </motion.div>
          ) : (

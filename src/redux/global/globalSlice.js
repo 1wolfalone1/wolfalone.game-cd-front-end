@@ -5,6 +5,14 @@ export default createSlice({
    initialState: {
       openBackdrop: false,
       navActive: 1,
+      snackBar: {
+         v: "bottom",
+         h: "right",
+         open: false,
+         message: 'Something went wrong!',
+         typeStatus: 'error',
+         title: "Error"
+      },
    },
    reducers: {
       changeBackdrop: (state, action) => {
@@ -12,7 +20,10 @@ export default createSlice({
       },
       changeNavActive: (state, action) => {
          state.navActive = action.payload;
-      }
+      },
+      changeSnackBarState: (state, action) => {
+         state.snackBar = { ...state.snackBar, ...action.payload };
+      },
    },
 });
 

@@ -19,7 +19,9 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
 }
-
+.Mui-disabled {
+  color: #a4a4a4 !important;
+}
 // button {
 //   position: relative;
 //   overflow: hidden;

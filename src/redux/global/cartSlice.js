@@ -36,16 +36,17 @@ export default createSlice({
          }
       },
       changeQuantity: (state, action) => {
-         console.log(typeof +action.payload.quantity);
-         console.log(Number(action.payload.quantity), 'dfasdfjkhjasdfjklhasjkldfjkalsdfjasdflkjasdfljasdf')
-         if(Number(action.payload.quantity) === 0 || action.payload.quantity === '') {
-            state.items = state.items.map(item => {
-               if(item.id === action.payload.id){
-                  return {...item, cartQuantity: +0}
+         if (
+            Number(action.payload.quantity) === 0 ||
+            action.payload.quantity === ""
+         ) {
+            state.items = state.items.map((item) => {
+               if (item.id === action.payload.id) {
+                  return { ...item, cartQuantity: +0 };
                } else {
                   return item;
                }
-            })
+            });
          }
          if (
             typeof Number(action.payload.quantity) !== "number" ||
@@ -79,6 +80,21 @@ export default createSlice({
                   return item;
                }
             });
+         }
+      },
+      addToCartWithQuantity: (state, action) => {
+         const game = action.payload;
+         let count = 0;
+         state.items = state.items.map((item) => {
+            if (item.id === game.id) {
+               count++;
+               return { ...item, cartQuantity: game.cartQuantity + +item.cartQuantity };
+            } else {
+               return item;
+            }
+         });
+         if (count === 0) {
+            state.items.push(game);
          }
       },
       removeItems: (state, action) => {

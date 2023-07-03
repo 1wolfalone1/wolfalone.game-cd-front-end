@@ -21,6 +21,9 @@ import ThumpImage from "../../component/thump-image/ThumpImage";
 import { style } from "../../style/custom/custom";
 import ControlPointIcon from "@mui/icons-material/ControlPoint";
 import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline";
+import { useDispatch, useSelector } from "react-redux";
+import cartSlice, { cartSliceSelector } from "../../redux/global/cartSlice";
+import globalSlice from "../../redux/global/globalSlice";
 const descriptionGameStyle = {
    box: {
       padding: "1rem 3rem",
@@ -40,13 +43,28 @@ const descriptionGameStyle = {
    },
 };
 export default function GameDetails() {
+   const [quantity, setQuantity] = useState(0);
+   const { items } = useSelector(cartSliceSelector);
    const { id } = useParams();
    const [game, setGame] = useState();
+   const [cartQuantity, setCartQuantity] = useState(0);
+   const dispatch = useDispatch();
    useEffect(() => {
       getGameById(id);
-      
    }, []);
-   
+   useEffect(() => {
+      setCartQuantity(getCurrentQuantity(items));
+   }, [items, game]);
+   const getCurrentQuantity = (items) => {
+
+      console.log(items, game);
+      let currentItemInCart = items?.find((item) => item?.id === game?.id);
+      let currentQuantity = 0;
+      if (currentItemInCart) {
+         currentQuantity = currentItemInCart.cartQuantity;
+      }
+      return currentQuantity;
+   };
    const getGameById = async (id) => {
       try {
          const res = await apid.get(`/games/details/${id}`);
@@ -56,6 +74,71 @@ export default function GameDetails() {
          console.log(game);
       } catch (err) {
          console.error(err);
+      }
+   };
+   const handleAddToCart = () => {
+      console.log(quantity)
+      dispatch(cartSlice.actions.addToCartWithQuantity({...game, cartQuantity: quantity}));
+      setQuantity(0);
+      dispatch(
+         globalSlice.actions.changeSnackBarState({
+            open: true,
+            typeStatus: 'success',
+            title: 'Success',
+            message: "Add to cart successfully!",
+         })
+      );
+   };
+   const handleQuantityChange = (e) => {
+      console.log(e.target.value);
+      if(!e.target.value){
+         setQuantity(0);
+         return;
+      }
+      if (isNaN(Number(e.target.value))) {
+      } else {
+         if (e.target.value < 0) {
+            dispatch(
+               globalSlice.actions.changeSnackBarState({
+                  open: true,
+                  message: "Quantity cannot be negative!",
+               })
+            );
+         } else if (+e.target.value > game.quantity -  +cartQuantity) {
+            dispatch(
+               globalSlice.actions.changeSnackBarState({
+                  open: true,
+                  message: "Quantity exceed  current stock!",
+               })
+            );
+         } else {
+            setQuantity(Number(e.target.value));
+         }
+      }
+   };
+   const handleIncreaseQuantity = () => {
+      if(+quantity + +cartQuantity >= +game.quantity){
+         dispatch(
+            globalSlice.actions.changeSnackBarState({
+               open: true,
+               message: "Desired quantity exceed current stock!",
+            })
+         );
+      } else {
+         setQuantity(Number(quantity + 1));
+      }
+   };
+   const handleDecreaseQuantity = () => {
+      if(+quantity -1  < 0){
+         dispatch(
+            globalSlice.actions.changeSnackBarState({
+               open: true,
+               message: "Quantity cannot be negative!",
+            })
+         );
+      } else {
+         console.log(quantity + "quantity is negative")
+         setQuantity(Number(+quantity - 1));
       }
    };
    return (
@@ -127,7 +210,7 @@ export default function GameDetails() {
                               Quantity:{" "}
                            </Typography>
                            <Box>
-                              <IconButton>
+                              <IconButton onClick={handleDecreaseQuantity}>
                                  <RemoveCircleOutlineIcon
                                     sx={{
                                        fontSize: "4rem",
@@ -138,6 +221,8 @@ export default function GameDetails() {
                               <TextField
                                  variant="outlined"
                                  color="Complementary2"
+                                 value={quantity}
+                                 onChange={handleQuantityChange}
                                  sx={{
                                     input: {
                                        fontSize: "2rem",
@@ -147,7 +232,7 @@ export default function GameDetails() {
                                     },
                                  }}
                               />
-                              <IconButton>
+                              <IconButton onClick={handleIncreaseQuantity}>
                                  <ControlPointIcon
                                     sx={{
                                        fontSize: "4rem",
@@ -177,6 +262,7 @@ export default function GameDetails() {
                               variant="outlined"
                               color="Complementary1"
                               sx={{ fontSize: "3rem" }}
+                              onClick={handleAddToCart}
                            >
                               Add to cart
                            </Button>
@@ -193,20 +279,23 @@ export default function GameDetails() {
                </Grid>
                <Divider color="Complementary1" />
                <Box>
-                  <Box sx={{display: 'flex', justifyContent: 'center'}}>
+                  <Box sx={{ display: "flex", justifyContent: "center" }}>
                      <Typography
                         sx={{
                            fontSize: "4rem",
                            color: style.color.$Accent1,
                            borderBottom: "1px solid red",
-                           width: '40%',
-                           textAlign: "center"
+                           width: "40%",
+                           textAlign: "center",
                         }}
                      >
                         Description
                      </Typography>
                   </Box>
-                  <div dangerouslySetInnerHTML={{ __html: game.description }} className={s.description}/>
+                  <div
+                     dangerouslySetInnerHTML={{ __html: game.description }}
+                     className={s.description}
+                  />
                </Box>
             </Stack>
          ) : (

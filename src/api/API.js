@@ -38,10 +38,10 @@ apid.interceptors.response.use(
    },
    (error) => {
       console.log(error);
-      if (error.response.status === 403) {
-         window.location.href = "/login?auth=403";
-      } else if (error.response.status === 406) {
-         window.location.href = "/login?auth=406";
-      }
+      // if (error.response.status === 403) {
+      //    window.location.href = "/login?auth=403";
+      // } else if (error.response.status === 406) {
+      //    window.location.href = "/login?auth=406";
+      // }
    }
 );

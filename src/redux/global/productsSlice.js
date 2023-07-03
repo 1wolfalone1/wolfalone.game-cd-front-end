@@ -88,6 +88,7 @@ export const getGameAndPaging = createAsyncThunk(
       } catch (e) {
          dispatch(globalSlice.actions.changeBackdrop(false));
          console.error(e);
+         throw e;
       }
    }
 );
@@ -115,6 +116,7 @@ export const getGameAndFilterAndPaging = createAsyncThunk(
       } catch (e) {
          dispatch(globalSlice.actions.changeBackdrop(false));
          console.log(e);
+         throw e;
       }
    }
 );
