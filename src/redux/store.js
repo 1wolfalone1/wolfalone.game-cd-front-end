@@ -6,19 +6,21 @@ import globalSlice from "./global/globalSlice";
 import storage from "redux-persist/lib/storage";
 import persistReducer from "redux-persist/es/persistReducer";
 import cartSlice from "./global/cartSlice";
+import orderSlice from "./global/orderSlice";
 const persistConfig = {
    key: "root",
    version: 1,
    storage,
    // if you do not want to persist this part of the state
-   blacklist: ['productSlice', 'layout', 'globalSlice'],
+   blacklist: ['productSlice', 'layout', 'globalSlice', 'orderSlice'],
 };
 const reducer = combineReducers({
    userInfo: userInfoSlice.reducer,
    layout: layoutSlice.reducer,
    productSlice: productSlice.reducer,
    globalSlice: globalSlice.reducer,
-   cartSlice: cartSlice.reducer
+   cartSlice: cartSlice.reducer,
+   orderSlice: orderSlice.reducer
 });
 const persistedReducer = persistReducer(persistConfig, reducer);
 

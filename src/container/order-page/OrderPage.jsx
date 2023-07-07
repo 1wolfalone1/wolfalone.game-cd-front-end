@@ -1,24 +1,28 @@
 import { Box } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
    infoUserSelector,
    statusSelector,
 } from "../../redux/global/userInfoSlice";
-import { cartSliceSelector } from "../../redux/global/cartSlice";
+import cartSlice, { cartSliceSelector } from "../../redux/global/cartSlice";
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
 import ListsItemInOrder from "../../component/lists-item-in-order/ListsItemInOrder";
 import InfoOrder from "../info-order/InfoOrder";
 import TotalOrder from "../../component/total-order/TotalOrder";
 import { LoadingButton } from "@mui/lab";
 import { apid } from "../../api/API";
+import globalSlice from "../../redux/global/globalSlice";
+import { useNavigate } from "react-router-dom";
 
 export default function OrderPage() {
    const info = useSelector(infoUserSelector);
    const status = useSelector(statusSelector);
+   const dispatch = useDispatch();
    const { items } = useSelector(cartSliceSelector);
    const [totalPayment, setTotalPayment] = useState(0);
    const [isOrderable, setIsOrderable] = useState(true);
+   const navigate = useNavigate();
    const [deliveryInfo, setDeliveryInfo] = useState({
       name: "",
       phone: "",
@@ -54,6 +58,7 @@ export default function OrderPage() {
          return {
             id: item.id,
             quantity: item.cartQuantity,
+            price: item.price
          };
       });
       const formData = {
@@ -67,10 +72,21 @@ export default function OrderPage() {
          console.log(res);
          const data = res.data;
          console.log(data);
+         dispatch(cartSlice.actions.resetCart());
+         dispatch(globalSlice.actions.changeSnackBarState({
+            open: true,
+            title: "Success",
+            message: "Order profile successfully",
+            typeStatus: "success"
+         }))
+
+         navigate('/order-history')
       } catch (e) {
          console.log(e);
       }
    };
+
+
    return (
       <Box sx={{ padding: "8rem 12rem" }}>
          <Grid2 container spacing={4}>

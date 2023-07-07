@@ -40,6 +40,7 @@ export default function Header() {
    const [value, setValue] = React.useState("1");
   
    const handleChange = (event, newValue) => {
+      console.log(newValue)
       setValue(newValue);
    };
    useEffect(() => {
@@ -150,6 +151,8 @@ export default function Header() {
                      content="Orders"
                      className="HeaderLink"
                      value="4"
+                  onClick={()=> navigate('/order-history')}
+
                      label={
                         <Box sx={boxStyle}>
                            Orders <ListAltOutlinedIcon sx={iconStyle} />

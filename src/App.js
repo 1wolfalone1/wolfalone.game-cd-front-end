@@ -18,6 +18,7 @@ import CartContainer from "./container/cart-container/CartContainer";
 import UserProfile from "./container/user-profile/UserProfile";
 import OrderPage from "./container/order-page/OrderPage";
 import OrderHistory from "./container/order-history/OrderHistory";
+import OrderDetails from "./container/order-details/OrderDetails";
 
 const darkTheme = createTheme({
    palette: {
@@ -54,6 +55,7 @@ function App() {
                <Route path="profile" element={<UserProfile />} />
                <Route path="order" element={<OrderPage />} />
                <Route path="order-history" element={<OrderHistory />} />
+               <Route path="order-details/:orderId" element={<OrderDetails />} />
             </Route>
          </Routes>
       </ThemeProvider>

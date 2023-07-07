@@ -1,14 +1,14 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-
+const initialState = {
+   items: [],
+   status: {
+      msg: "",
+      isValid: false,
+   },
+}
 export default createSlice({
    name: "cartSlice",
-   initialState: {
-      items: [],
-      status: {
-         msg: "",
-         isValid: false,
-      },
-   },
+   initialState: initialState,
    reducers: {
       addToCart: (state, action) => {
          const item = state.items.find((item) => item.id === action.payload.id);
@@ -100,6 +100,9 @@ export default createSlice({
       removeItems: (state, action) => {
          state.items = state.items.filter((item) => item.id !== action.payload);
       },
+      resetCart: (state, action) => {
+         return initialState;
+      }
    },
 });
 

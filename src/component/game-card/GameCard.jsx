@@ -21,7 +21,6 @@ export default function GameCard({ game }) {
       if (isFirstLoad) {
          setIsFirstLoad(false);
       } else {
-         console.log(status, 'statausdasdfadfs')
          setOpenSnackBar(true);
       }
    }, [status]);
