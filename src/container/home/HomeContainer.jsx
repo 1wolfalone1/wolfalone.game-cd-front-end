@@ -1,10 +1,11 @@
 import s from "./homeContainer.module.scss";
 import clsx from "clsx";
-import React, { useLayoutEffect } from "react";
+import React, { useEffect, useLayoutEffect, useState } from "react";
 import layoutSlice from "../common/layout/layoutSlice";
 import { useDispatch } from "react-redux";
 import ButtonHeader from "../../component/button/ButtonHeader";
 import { Button } from "@mui/material";
+import { apid } from "../../api/API";
 
 export default function HomeContainer() {
    const dispatch = useDispatch();
@@ -16,6 +17,8 @@ export default function HomeContainer() {
          dispatch(layoutSlice.actions.updateLayout(""));
       };
    }, []);
+   const [data, setData] = useState();
+
    return (
       <div className={clsx(s.container)}>
          <div className={clsx(s.leftMessage)}>

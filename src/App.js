@@ -19,6 +19,9 @@ import UserProfile from "./container/user-profile/UserProfile";
 import OrderPage from "./container/order-page/OrderPage";
 import OrderHistory from "./container/order-history/OrderHistory";
 import OrderDetails from "./container/order-details/OrderDetails";
+import AdminGameContainer from "./container/admin-game-container/AdminGameContainer";
+import AdminOrderContainer from "./container/admin-order-container/AdminOrderContainer";
+import AdminCreateGame from "./container/admin-create-game/AdminCreateGame";
 
 const darkTheme = createTheme({
    palette: {
@@ -28,24 +31,23 @@ const darkTheme = createTheme({
 function App() {
    const location = useLocation();
    const dispatch = useDispatch();
-   console.log(location, 'locationnnnnnnnnnnnnnnnnnnnnnnnnnnnn');
+   console.log(location, "locationnnnnnnnnnnnnnnnnnnnnnnnnnnnn");
    useEffect(() => {
       const path = location.pathname;
-      if(path === '/'){
+      if (path === "/" || path === "/admin") {
          dispatch(globalSlice.actions.changeNavActive(1));
-      }else if(path === '/games'){
+      } else if (path === "/games" || path === "/admin/order-manager") {
          dispatch(globalSlice.actions.changeNavActive(2));
-      } else if(path === '/cart'){
+      } else if (path === "/cart") {
          dispatch(globalSlice.actions.changeNavActive(3));
       }
    }, [location]);
-  
 
    return (
       <ThemeProvider theme={darkTheme}>
          <CssBaseline />
          <Routes>
-            <Route path='/' element={<Layout />}>
+            <Route path="/" element={<Layout />}>
                <Route index element={<HomeContainer />} />
                <Route path="login" element={<LoginContainer />} />
                <Route path="signup" element={<RegistrationContainer />} />
@@ -55,6 +57,16 @@ function App() {
                <Route path="profile" element={<UserProfile />} />
                <Route path="order" element={<OrderPage />} />
                <Route path="order-history" element={<OrderHistory />} />
+               <Route
+                  path="order-details/:orderId"
+                  element={<OrderDetails />}
+               />
+            </Route>
+            <Route path="/admin/" element={<Layout />}>
+               <Route index element={<AdminGameContainer />} />
+               <Route path="order-manager" element={<AdminOrderContainer />} />
+               <Route path="create-game" element={<AdminCreateGame />} />
+               <Route path="update-game/:id" element={<AdminCreateGame />} />
                <Route path="order-details/:orderId" element={<OrderDetails />} />
             </Route>
          </Routes>

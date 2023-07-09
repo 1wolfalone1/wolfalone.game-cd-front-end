@@ -1,26 +1,21 @@
-import s from "./LoginContainer.module.scss";
-import React, { useEffect, useLayoutEffect, useState } from "react";
-import { useDispatch } from "react-redux";
-import layoutSlice from "../common/layout/layoutSlice";
-import { motion } from "framer-motion";
+import { Button, TextField } from "@mui/material";
+import { useGoogleLogin } from "@react-oauth/google";
 import clsx from "clsx";
-import { Button, FormHelperText, TextField } from "@mui/material";
-import { style } from "../../style/custom/custom";
-import ButtonGoogle from "../../component/button/buttonGoogle/ButtonGoogle";
+import { motion } from "framer-motion";
+import React, { useLayoutEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { getData, getLogin } from "../../api/authenticationApi";
-import { GoogleLogin, googleLogout, useGoogleLogin } from "@react-oauth/google";
-import { useCookies } from "react-cookie";
 import api from "../../api/authenticationApi";
+import ButtonGoogle from "../../component/button/buttonGoogle/ButtonGoogle";
 import userInfoSlice from "../../redux/global/userInfoSlice";
-import { red } from "@mui/material/colors";
+import { style } from "../../style/custom/custom";
+import layoutSlice from "../common/layout/layoutSlice";
+import s from "./LoginContainer.module.scss";
 
 export default function LoginContainer() {
-   const [cookies, setCookie, removeCookie] = useCookies();
    const dispatch = useDispatch();
    const [loginStatus, setLoginStatus] = useState("");
    const [loginGoogleStatus, setLoginGoogleStatus] = useState(true);
-   console.log(cookies);
    const [username, setUserName] = useState("");
    const [password, setPassword] = useState("");
    const navigate = useNavigate();
@@ -45,17 +40,37 @@ export default function LoginContainer() {
          },
       },
    };
-   const handle200 = (response) => {
-      dispatch(
-         userInfoSlice.actions.changeAuthentication({
-            status: "user",
-            info: {
-               ...response.data,
-            },
-         })
-      );
-      localStorage.setItem("user", JSON.stringify(response.data));
-      navigate("/");
+   const handle200 = async (response) => {
+      const data = await response.data;
+      try {
+         console.log(data);
+         if (data.role === "USER") {
+            dispatch(
+               userInfoSlice.actions.changeAuthentication({
+                  status: "user",
+                  info: {
+                     ...data,
+                  },
+               })
+            );
+            localStorage.setItem("user", JSON.stringify(response.data));
+            navigate("/");
+         } else if (data.role === "ADMIN") {
+            console.log(data);
+            dispatch(
+               userInfoSlice.actions.changeAuthentication({
+                  status: "admin",
+                  info: {
+                     ...data,
+                  },
+               })
+            );
+            localStorage.setItem("user", JSON.stringify(response.data));
+            navigate("/admin");
+         }
+      } catch (e) {
+         console.log(e);
+      }
    };
 
    useLayoutEffect(() => {

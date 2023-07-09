@@ -1,26 +1,26 @@
 @use "./style/common" as c;
 
 html {
-  font-size: 10px;
+   font-size: 10px;
 }
 body {
-  margin: 0;
-  font-family: c.$Font1;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  padding: 0;
-  background: c.$Background3;
-  background-repeat: no-repeat;
-  min-height: 100vh;
-  box-sizing: border-box;
-  font-size: 62.5%;
+   margin: 0;
+   font-family: c.$Font1;
+   -webkit-font-smoothing: antialiased;
+   -moz-osx-font-smoothing: grayscale;
+   padding: 0;
+   background: c.$Background3;
+   background-repeat: no-repeat;
+   min-height: 100vh;
+   box-sizing: border-box;
+   font-size: 62.5%;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
+   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
 }
 .Mui-disabled {
-  color: #a4a4a4 !important;
+   color: #a4a4a4 !important;
 }
 // button {
 //   position: relative;
@@ -54,39 +54,39 @@ code {
 // }
 
 .ripple {
-  background-position: center;
-  transition: background 0.8s;
+   background-position: center;
+   transition: background 0.8s;
 }
 .ripple:hover {
-  background: #0080605a radial-gradient(circle, transparent 1%, #0080605a 1%) center/15000%;
-  cursor: pointer;
+   background: #0080605a radial-gradient(circle, transparent 1%, #0080605a 1%) center/15000%;
+   cursor: pointer;
 }
 .ripple:active:hover {
-  background-color: #0080605a;
-  background-size: 100%;
-  transition: background 0s;
+   background-color: #0080605a;
+   background-size: 100%;
+   transition: background 0s;
 }
 
 button {
-  padding: 0;
-  background: none;
-  border: none;
-  outline: none;
+   padding: 0;
+   background: none;
+   border: none;
+   outline: none;
 }
 
 * {
-  caret-color: transparent;
 }
-
+.ql-editor {
+   font-size: 20px;
+}
 input {
-  caret-color: c.$Complementary1;
+   caret-color: c.$Complementary1;
 }
 input:-webkit-autofill,
 input:-webkit-autofill:focus {
-    transition: background-color 600000s 0s, color 600000s 0s !important;
+   transition: background-color 600000s 0s, color 600000s 0s !important;
 }
 
 input[data-autocompleted] {
-    background-color: transparent !important;
+   background-color: transparent !important;
 }
-

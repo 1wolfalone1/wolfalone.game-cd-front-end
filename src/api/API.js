@@ -25,7 +25,6 @@ apid.interceptors.request.use(
       console.log(config);
       console.log(config);
       console.log(config.baseURL);
-
       return config;
    },
    (error) => Promise.reject(error)
@@ -38,10 +37,10 @@ apid.interceptors.response.use(
    },
    (error) => {
       console.log(error);
-      // if (error.response.status === 403) {
-      //    window.location.href = "/login?auth=403";
-      // } else if (error.response.status === 406) {
-      //    window.location.href = "/login?auth=406";
-      // }
+      if (error.response.status === 403) {
+         window.location.href = "/login?auth=403";
+      } else if (error.response.status === 406) {
+         window.location.href = "/login?auth=406";
+      }
    }
 );

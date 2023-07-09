@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
    gamesPagingSelector,
+   getGameAndFilterAndPaging,
    getGameAndPaging,
 } from "../../redux/global/productsSlice";
 import { Grid, Stack } from "@mui/material";
@@ -14,7 +15,7 @@ export default function ProductsPageContainer() {
    const gamePageData = useSelector(gamesPagingSelector);
    const dispatch = useDispatch();
    useEffect(() => {
-      dispatch(getGameAndPaging(1));
+      dispatch(getGameAndFilterAndPaging(1));
    }, []);
    console.log(gamePageData);
    return (

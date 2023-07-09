@@ -1,6 +1,32 @@
 import { createTheme } from "@mui/material";
 
 export const theme = createTheme({
+   components: {
+      MuiAutocomplete: {
+         styleOverrides: {
+            tag: {
+               backgroundColor: "purple", // Customize the background color of the Chip here
+               color: "white", // Customize the text color of the Chip here
+            },
+         },
+      },
+      MuiInputLabel: {
+         styleOverrides: {
+            root: {
+               color: "#fff8c8", // Customize the color of the label here
+            },
+         },
+      },
+      MuiOutlinedInput: {
+         styleOverrides: {
+            root: {
+               "& fieldset": {
+                  borderColor: "#e2e2e2", // Customize the border color here
+               },
+            },
+         },
+      },
+   },
    palette: {
       primary: {
          main: "#e2e2e2",
@@ -44,7 +70,7 @@ export const theme = createTheme({
       },
       Accent2: {
          main: "#622773",
-         contrastText: "#c6cfff"
+         contrastText: "#c6cfff",
       },
       Accent3: {
          main: "#4a1259",

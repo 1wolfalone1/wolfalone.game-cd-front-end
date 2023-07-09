@@ -82,6 +82,13 @@ export default function OrderPage() {
 
          navigate('/order-history')
       } catch (e) {
+         dispatch(globalSlice.actions.changeSnackBarState({
+            open: true,
+            title: "Error",
+            message: "Order profile failure! Try again",
+            typeStatus: "error"
+         }))
+
          console.log(e);
       }
    };

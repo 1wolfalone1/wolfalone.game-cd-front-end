@@ -23,14 +23,17 @@ import { style } from "../../../style/custom/custom";
 import UserInfoDropDown from "../../../component/header/userInfoDropDown/UserInfoDropDown";
 import { Badge, Box, Tab, Tabs, Typography } from "@mui/material";
 import { cartSliceSelector } from "../../../redux/global/cartSlice";
-import globalSlice, { globalSliceSelector } from "../../../redux/global/globalSlice";
-
+import globalSlice, {
+   globalSliceSelector,
+} from "../../../redux/global/globalSlice";
+import DriveFileRenameOutlineIcon from "@mui/icons-material/DriveFileRenameOutline";
+import ViewListIcon from "@mui/icons-material/ViewList";
 const iconStyle = {
    fontSize: "2.4rem",
 };
 const boxStyle = { display: "flex", alignItems: "center", gap: "0.4rem" };
 export default function Header() {
-   const {navActive} = useSelector(globalSliceSelector);
+   const { navActive } = useSelector(globalSliceSelector);
    const { items } = useSelector(cartSliceSelector);
    const [isActive, setIsActive] = React.useState(false);
    const navigate = useNavigate();
@@ -38,9 +41,9 @@ export default function Header() {
    const userInfo = useSelector(infoUserSelector);
    const [name, setUserName] = useState("");
    const [value, setValue] = React.useState("1");
-  
+   const info = useSelector(infoUserSelector);
    const handleChange = (event, newValue) => {
-      console.log(newValue)
+      console.log(newValue);
       setValue(newValue);
    };
    useEffect(() => {
@@ -91,79 +94,117 @@ export default function Header() {
             <div className={s.logo}>
                <img src={Logo} alt="" />
             </div>
-            <Tabs
-               value={`${navActive}`}
-               onChange={handleChange}
-               color="Complementary2"
-               aria-label="secondary tabs example"
-               className={clsx(s.tabs)}
-               TabIndicatorProps={{
-                  sx: {
-                     backgroundColor: style.color.$Accent1,
-                  },
-               }}
-            >
-               <Tab
-                  label={
-                     <Box sx={boxStyle}>
-                        Home <HomeOutlinedIcon sx={iconStyle} />
-                     </Box>
-                  }
-                  className="HeaderLink"
-                  value="1"
-                  onClick={pageNavigate("/")}
-               />
-               <Tab
-                  className="HeaderLink"
-                  value="2"
-                  label={
-                     <Box sx={boxStyle}>
-                        Market <StoreOutlinedIcon sx={iconStyle} />
-                     </Box>
-                  }
-                  onClick={() => navigate("/games")}
-               />
-               <Tab
-                  className="HeaderLink"
-                  value="3"
-                  onClick={()=> navigate('/cart')}
-                  label={
-                     <Box sx={boxStyle}>
-                        Cart
-                        <Badge
-                           badgeContent={items?.length}
-                           color="secondary"
-                           sx={{
-                              "& .MuiBadge-badge": {
-                                 fontSize: 12,
-                                 height: 20,
-                                 minWidth: 20,
-                              },
-                           }}
-                        >
-                           <ShoppingCartOutlinedIcon sx={iconStyle} />
-                        </Badge>
-                     </Box>
-                  }
-               />
-               {user === "user" ? (
-                  <Tab
-                     content="Orders"
-                     className="HeaderLink"
-                     value="4"
-                  onClick={()=> navigate('/order-history')}
 
+            {user === "user" || user === "guest" ? (
+               <Tabs
+                  value={`${navActive}`}
+                  onChange={handleChange}
+                  color="Complementary2"
+                  aria-label="secondary tabs example"
+                  className={clsx(s.tabs)}
+                  TabIndicatorProps={{
+                     sx: {
+                        backgroundColor: style.color.$Accent1,
+                     },
+                  }}
+               >
+                  <Tab
                      label={
                         <Box sx={boxStyle}>
-                           Orders <ListAltOutlinedIcon sx={iconStyle} />
+                           Home <HomeOutlinedIcon sx={iconStyle} />
+                        </Box>
+                     }
+                     className="HeaderLink"
+                     value="1"
+                     onClick={pageNavigate("/")}
+                  />
+                  <Tab
+                     className="HeaderLink"
+                     value="2"
+                     label={
+                        <Box sx={boxStyle}>
+                           Market <StoreOutlinedIcon sx={iconStyle} />
+                        </Box>
+                     }
+                     onClick={() => navigate("/games")}
+                  />
+                  <Tab
+                     className="HeaderLink"
+                     value="3"
+                     onClick={() => navigate("/cart")}
+                     label={
+                        <Box sx={boxStyle}>
+                           Cart
+                           <Badge
+                              badgeContent={items?.length}
+                              color="secondary"
+                              sx={{
+                                 "& .MuiBadge-badge": {
+                                    fontSize: 12,
+                                    height: 20,
+                                    minWidth: 20,
+                                 },
+                              }}
+                           >
+                              <ShoppingCartOutlinedIcon sx={iconStyle} />
+                           </Badge>
                         </Box>
                      }
                   />
-               ) : (
-                  ""
-               )}
-               <Tab className={s.tabnone} value="5" label="" />
-            </Tabs>
+                  {user === "user" ? (
+                     <Tab
+                        content="Orders"
+                        className="HeaderLink"
+                        value="4"
+                        onClick={() => navigate("/order-history")}
+                        label={
+                           <Box sx={boxStyle}>
+                              Orders <ListAltOutlinedIcon sx={iconStyle} />
+                           </Box>
+                        }
+                     />
+                  ) : (
+                     ""
+                  )}
+                  <Tab className={s.tabnone} value="5" label="" />
+               </Tabs>
+            ) : (
+               <Tabs
+                  value={`${navActive}`}
+                  onChange={handleChange}
+                  color="Complementary2"
+                  aria-label="secondary tabs example"
+                  className={clsx(s.tabs)}
+                  TabIndicatorProps={{
+                     sx: {
+                        backgroundColor: style.color.$Accent1,
+                     },
+                  }}
+               >
+                  <Tab
+                     label={
+                        <Box sx={boxStyle}>
+                           Game manager{" "}
+                           <DriveFileRenameOutlineIcon sx={iconStyle} />
+                        </Box>
+                     }
+                     className="HeaderLink"
+                     value="1"
+                     onClick={pageNavigate("/admin")}
+                  />
+                  <Tab
+                     className="HeaderLink"
+                     value="2"
+                     label={
+                        <Box sx={boxStyle}>
+                           Order manager <ViewListIcon sx={iconStyle} />
+                        </Box>
+                     }
+                     onClick={() => navigate("/admin/order-manager")}
+                  />
+                  <Tab className={s.tabnone} value="4" label="" />
+               </Tabs>
+            )}
          </div>
          {user === "guest" ? (
             <div className={clsx(s.rightNav)}>
